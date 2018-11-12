@@ -15,12 +15,12 @@ class PaintMenu extends JMenuBar {
     }
 
     private void initMenus() {
-        add(makeMenu("File", KeyEvent.VK_F, this::initFileMenuItems));
-        add(makeMenu("Edit", KeyEvent.VK_E, this::initEditMenuItems));
-        add(makeMenu("Brush", KeyEvent.VK_B, this::initBrushMenuItems));
+        add(makeMenu("File", this::initFileMenuItems, KeyEvent.VK_F));
+        add(makeMenu("Edit", this::initEditMenuItems, KeyEvent.VK_E));
+        add(makeMenu("Brush", this::initBrushMenuItems, KeyEvent.VK_B));
     }
 
-    private JMenu makeMenu(String name, int mnemonic, Consumer<JMenu> initFunc) {
+    private JMenu makeMenu(String name, Consumer<JMenu> initFunc, int mnemonic) {
         JMenu menu = new JMenu(name);
         // Call the initializing function that adds the appropriate menu items.
         initFunc.accept(menu);
