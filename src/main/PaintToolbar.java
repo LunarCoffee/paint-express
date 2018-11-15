@@ -3,7 +3,6 @@ package main;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 
 class PaintToolbar extends JToolBar {
@@ -17,7 +16,7 @@ class PaintToolbar extends JToolBar {
         JPanel temp = new JPanel(new FlowLayout(FlowLayout.LEFT));
         addColorButtons(temp);
 
-        // Slider controlling the brush's width.
+        // Slider controlling the brush's winWidth.
         temp.add(new JLabel("   Width:"));
         JSlider brushWidth = new JSlider(JSlider.HORIZONTAL, 1, 20, 1);
         brushWidth.addChangeListener(e -> Main.canvas.g2.setStroke(new BasicStroke(brushWidth.getValue())));
@@ -71,7 +70,7 @@ class PaintToolbar extends JToolBar {
 
     private JButton makeGeometryButton(String name) throws IOException {
         // Scale icon size to fit inside the button.
-        ImageIcon imageIcon = new ImageIcon(ImageIO.read(new File("resources/icons/" + name + ".png")));
+        ImageIcon imageIcon = new ImageIcon(ImageIO.read(getClass().getResource("/icons/" + name + ".png")));
         Image image = imageIcon.getImage();
         image = image.getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(image);
