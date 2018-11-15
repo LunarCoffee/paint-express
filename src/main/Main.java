@@ -4,8 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main extends JFrame {
+    private PaintToolbar toolBar = new PaintToolbar();
+
+    static int winWidth = 750;
+    static int winHeight = 700;
     static Canvas canvas = new Canvas();
-    static PaintToolbar toolBar = new PaintToolbar();
 
     private Main() {
         setLayout(new BorderLayout());
@@ -15,7 +18,7 @@ public class Main extends JFrame {
     private void initUI() {
         setTitle("Paint Express");
         setIconImage(new ImageIcon("resources/icons/window_icon.png").getImage());
-        setSize(1000, 700);
+        setSize(winWidth, winHeight);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -23,7 +26,6 @@ public class Main extends JFrame {
         PaintMenu menu = new PaintMenu();
         add(menu, BorderLayout.PAGE_START);
 
-        // Add custom toolbar with color and tool selection.
         add(toolBar);
         add(canvas, BorderLayout.PAGE_END);
         pack();
