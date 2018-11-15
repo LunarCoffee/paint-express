@@ -1,9 +1,7 @@
 package main;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 class PaintToolbar extends JToolBar {
     PaintToolbar() {
@@ -61,16 +59,16 @@ class PaintToolbar extends JToolBar {
             panel.add(makeGeometryButton("line"));
             panel.add(makeGeometryButton("rect"));
             panel.add(makeGeometryButton("oval"));
-        } catch (IOException ioe) {
-            // Cannot find icons for tool buttons.
+        } catch (NullPointerException npe) {
+            // When getResource() cannot find the specified resource, it returns null.
             JOptionPane.showMessageDialog(null, "Icons not found!", "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
     }
 
-    private JButton makeGeometryButton(String name) throws IOException {
+    private JButton makeGeometryButton(String name) {
         // Scale icon size to fit inside the button.
-        ImageIcon imageIcon = new ImageIcon(ImageIO.read(getClass().getResource("/icons/" + name + ".png")));
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/icons/" + name + ".png"));
         Image image = imageIcon.getImage();
         image = image.getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(image);

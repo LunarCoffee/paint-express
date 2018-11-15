@@ -11,7 +11,6 @@ class Canvas extends JPanel {
     private int oldY;
     private int curX;
     private int curY;
-
     BufferedImage image;
     Graphics2D g2;
     String shape = "pencil";
@@ -172,6 +171,12 @@ class Canvas extends JPanel {
         g2.fillRect(0, 0, Main.winWidth, Main.winHeight);
         g2.setColor(oldColor);
         repaint();
+    }
+
+    void invertColors() {
+        g2.setXORMode(Color.BLACK);
+        fillBackground(Color.WHITE);
+        g2.setPaintMode();
     }
 
     @Override

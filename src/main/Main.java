@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main extends JFrame {
-    private PaintToolbar toolBar = new PaintToolbar();
-
     static int winWidth = 750;
     static int winHeight = 700;
     static Canvas canvas = new Canvas();
@@ -16,17 +14,22 @@ public class Main extends JFrame {
     }
 
     private void initUI() {
+        // Set the title and try to find the window icon.
         setTitle("Paint Express");
-        setIconImage(new ImageIcon("resources/icons/window_icon.png").getImage());
+        try {
+            setIconImage(new ImageIcon(getClass().getResource("/icons/window_icon.png")).getImage());
+        } catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Icons not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Set window size, center it, and exit fully when the window is closed.
         setSize(winWidth, winHeight);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        // Add custom menu bar.
-        PaintMenu menu = new PaintMenu();
-        add(menu, BorderLayout.PAGE_START);
-
-        add(toolBar);
+        // Add custom menu bar, toolbar, and canvas.
+        add(new PaintMenu(), BorderLayout.PAGE_START);
+        add(new PaintToolbar());
         add(canvas, BorderLayout.PAGE_END);
         pack();
     }

@@ -103,11 +103,7 @@ class PaintMenu extends JMenuBar {
     }
 
     private void addInvertMenuItemClickedListener(JMenuItem menuItem) {
-        menuItem.addActionListener(e -> {
-            Main.canvas.g2.setXORMode(Color.BLACK);
-            Main.canvas.fillBackground(Color.WHITE);
-            Main.canvas.g2.setPaintMode();
-        });
+        menuItem.addActionListener(e -> Main.canvas.invertColors());
     }
 
     private void addClearMenuItemClickedListener(JMenuItem menuItem) {
