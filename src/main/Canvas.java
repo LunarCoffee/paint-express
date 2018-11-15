@@ -7,7 +7,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 class Canvas extends JPanel {
-    private int oldX, oldY, curX, curY;
+    private int oldX;
+    private int oldY;
+    private int curX;
+    private int curY;
 
     BufferedImage image;
     Graphics2D g2;
@@ -19,7 +22,7 @@ class Canvas extends JPanel {
         addMouseDraggedListener();
         addMouseReleasedListener();
 
-        image = new BufferedImage(745, 640, BufferedImage.TYPE_INT_RGB);
+        image = new BufferedImage(Main.winWidth, Main.winHeight - 60, BufferedImage.TYPE_INT_RGB);
         g2 = (Graphics2D) image.getGraphics();
         fillBackground(Color.WHITE);
         g2.setColor(Color.BLACK);
@@ -70,16 +73,27 @@ class Canvas extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                if (shape.equals("line")) {
+                switch (shape) {
+                case "line":
                     // Remove the non-AA rubber band line and draw a new AA-enabled one.
                     g2.drawLine(oldX, oldY, curX, curY);
                     g2.setPaintMode();
                     g2.drawLine(oldX, oldY, curX, curY);
-                } else if (shape.equals("rect")) {
+                    break;
+                case "rect":
                     // Remove the non-AA rubber band rectangle and draw a new AA-enabled one.
                     g2.drawPolygon(new int[]{oldX, curX, curX, oldX}, new int[]{oldY, oldY, curY, curY}, 4);
                     g2.setPaintMode();
                     g2.drawPolygon(new int[]{oldX, curX, curX, oldX}, new int[]{oldY, oldY, curY, curY}, 4);
+                    break;
+                case "oval":
+                    // Width and height of the previous rubber band circle.
+                    int width = Math.max(oldX, curX) - Math.min(oldX, curX);
+                    int height = Math.max(oldY, curY) - Math.min(oldY, curY);
+                    // Remove the non-AA rubber band circle and draw a new AA-enabled one.
+                    g2.drawOval(Math.min(oldX, curX), Math.min(oldY, curY), width, height);
+                    g2.setPaintMode();
+                    g2.drawOval(Math.min(oldX, curX), Math.min(oldY, curY), width, height);
                 }
                 // Reset coordinates.
                 curX = -1;
@@ -129,22 +143,33 @@ class Canvas extends JPanel {
 
         // Show new rubber band rectangle.
         g2.setXORMode(getBackground());
-        g2.drawPolygon(new int[]{oldX, x, x, oldX},
-                new int[]{oldY, oldY, y, y}, 4);
+        g2.drawPolygon(new int[]{oldX, x, x, oldX}, new int[]{oldY, oldY, y, y}, 4);
         curX = x;
         curY = y;
     }
 
     private void drawOval(int x, int y) {
-        JOptionPane.showMessageDialog(null, "This feature has yet to be be implemented.",
-                "Notice", JOptionPane.INFORMATION_MESSAGE);
-        System.out.printf("X: %d | Y: %d\n", x, y);
+        // Width and height of the previous rubber band circle.
+        int width = Math.max(oldX, curX) - Math.min(oldX, curX);
+        int height = Math.max(oldY, curY) - Math.min(oldY, curY);
+        // Remove previous rubber band circle.
+        if (curX > 0 && curY > 0)
+            g2.drawOval(Math.min(oldX, curX), Math.min(oldY, curY), width, height);
+
+        // Width and height of the new rubber band circle.
+        width = Math.max(oldX, x) - Math.min(oldX, x);
+        height = Math.max(oldY, y) - Math.min(oldY, y);
+        // Show new rubber band circle.
+        g2.setXORMode(getBackground());
+        g2.drawOval(Math.min(oldX, x), Math.min(oldY, y), width, height);
+        curX = x;
+        curY = y;
     }
 
     void fillBackground(Color color) {
         Color oldColor = g2.getColor();
         g2.setColor(color);
-        g2.fillRect(0, 0, 1000, 640);
+        g2.fillRect(0, 0, Main.winWidth, Main.winHeight);
         g2.setColor(oldColor);
         repaint();
     }
@@ -152,7 +177,7 @@ class Canvas extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         // Try to make the window at least 600 pixels tall.
-        return new Dimension(0, 600);
+        return new Dimension(0, Main.winHeight - 60);
     }
 
     @Override
