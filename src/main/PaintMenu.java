@@ -15,12 +15,12 @@ class PaintMenu extends JMenuBar {
     }
 
     private void initMenus() {
-        add(makeMenu("File", this::initFileMenuItems, KeyEvent.VK_F));
-        add(makeMenu("Edit", this::initEditMenuItems, KeyEvent.VK_E));
-        add(makeMenu("Brush", this::initBrushMenuItems, KeyEvent.VK_B));
+        add(makeMenu("File", KeyEvent.VK_F, this::initFileMenuItems));
+        add(makeMenu("Edit", KeyEvent.VK_E, this::initEditMenuItems));
+        add(makeMenu("Brush", KeyEvent.VK_B, this::initBrushMenuItems));
     }
 
-    private JMenu makeMenu(String name, Consumer<JMenu> initFunc, int mnemonic) {
+    private JMenu makeMenu(String name, int mnemonic, Consumer<JMenu> initFunc) {
         JMenu menu = new JMenu(name);
         // Call the initializing function that adds the appropriate menu items.
         initFunc.accept(menu);
@@ -29,23 +29,23 @@ class PaintMenu extends JMenuBar {
     }
 
     private void initFileMenuItems(JMenu menu) {
-        menu.add(makeMenuItem("Open", this::addOpenMenuItemClickedListener, KeyEvent.VK_O));
-        menu.add(makeMenuItem("Save", this::addSaveMenuItemClickedListener, KeyEvent.VK_S));
+        menu.add(makeMenuItem("Open", KeyEvent.VK_O, this::addOpenMenuItemClickedListener));
+        menu.add(makeMenuItem("Save", KeyEvent.VK_S, this::addSaveMenuItemClickedListener));
         menu.addSeparator();
-        menu.add(makeMenuItem("About", this::addAboutMenuItemClickedListener, KeyEvent.VK_A));
+        menu.add(makeMenuItem("About", KeyEvent.VK_A, this::addAboutMenuItemClickedListener));
     }
 
     private void initEditMenuItems(JMenu menu) {
-        menu.add(makeMenuItem("Invert", this::addInvertMenuItemClickedListener, KeyEvent.VK_I));
-        menu.add(makeMenuItem("Clear", this::addClearMenuItemClickedListener, KeyEvent.VK_C));
-        menu.add(makeMenuItem("Fill", this::addFillMenuItemClickedListener, KeyEvent.VK_F));
+        menu.add(makeMenuItem("Invert", KeyEvent.VK_I, this::addInvertMenuItemClickedListener));
+        menu.add(makeMenuItem("Clear", KeyEvent.VK_C, this::addClearMenuItemClickedListener));
+        menu.add(makeMenuItem("Fill", KeyEvent.VK_F, this::addFillMenuItemClickedListener));
     }
 
     private void initBrushMenuItems(JMenu menu) {
-        menu.add(makeMenuItem("Color", this::addColorMenuItemClickedListener, KeyEvent.VK_C));
+        menu.add(makeMenuItem("Color", KeyEvent.VK_C, this::addColorMenuItemClickedListener));
     }
 
-    private JMenuItem makeMenuItem(String name, Consumer<JMenuItem> listener, int mnemonic) {
+    private JMenuItem makeMenuItem(String name, int mnemonic, Consumer<JMenuItem> listener) {
         JMenuItem menuItem = new JMenuItem(name);
         // Call the initializing function that attaches the appropriate action listener.
         listener.accept(menuItem);
